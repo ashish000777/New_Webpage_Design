@@ -1,17 +1,28 @@
-import React from 'react';
-import JobList from './JobList';
+// app.js
+import React, { useState, useEffect } from 'react';
+//import ReactDOM from 'react-dom';
 
-const App = () => {
+const JobList = () => {
+    const [jobs, setJobs] = useState([]);
+
+    useEffect(() => {
+      fetch('/jobs.json')
+          .then(response => response.json())
+          .then(data => setJobs(data));
+  }, []);
+  
+
     return (
-        <div className="App">
-            <header>
-                <h1>Job Listings</h1>
-            </header>
-            <main>
-                <JobList />
-            </main>
+        <div>
+            {jobs.map(job => (
+                <div key={job.id} className="job">
+                    <h3>{job.title}</h3>
+                    <p>{job.description}</p>
+                </div>
+            ))}
         </div>
     );
 };
 
-export default App;
+//ReactDOM.render(<JobList />, document.getElementById('jobs'));
+export default JobList
